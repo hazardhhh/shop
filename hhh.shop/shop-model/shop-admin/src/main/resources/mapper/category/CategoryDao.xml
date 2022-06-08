@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hhh.shop.admin.modules.category.dao.CategoryDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hhh.shop.admin.modules.category.entity.CategoryEntity" id="categoryMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="pid" column="pid"/>
+        <result property="icon" column="icon"/>
+        <result property="orderNum" column="order_num"/>
+    </resultMap>
+
+
+    <resultMap id="categoryZtreeResultMap" type="com.hhh.shop.admin.modules.category.entity.CategoryEntity">
+
+        <!-- 先映射父类型 -->
+        <id column="id" property="id"/>
+        <result column="pname" property="name"/>
+        <result column="pid" property="pid"/>
+        <result column="pnum" property="orderNum"/>
+        <result column="picon" property="icon"/>
+
+        <!-- 子类型的映射-->
+        <collection property="children" ofType="com.hhh.shop.admin.modules.category.entity.CategoryEntity">
+            <id column="sid" property="id"/>
+            <result column="sname" property="name"/>
+            <result column="spid" property="pid"/>
+            <result column="snum" property="orderNum"/>
+            <result column="sicon" property="icon"/>
+        </collection>
+    </resultMap>
+
+    <select id="getCategoryZtreeData"  resultMap="categoryZtreeResultMap">
+            SELECT
+                p.id as id,
+                p.name as pname,
+                p.pid as pid,
+                p.order_num as pnum,
+                p.icon as picon,
+
+                s.id as sid,
+                s.name as sname,
+                s.pid as spid,
+                s.order_num as snum,
+                s.icon as sicon
+            FROM
+                t_category p
+            LEFT JOIN t_category s ON (s.pid = p.id)
+            WHERE
+                p.pid = - 1
+            order by p.order_num
+    </select>
+
+
+</mapper>

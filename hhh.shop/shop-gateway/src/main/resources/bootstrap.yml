@@ -1,0 +1,42 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: shop-gateway
+  cloud:
+    nacos:
+      config:
+        namespace: 34d9fe6b-1b57-49ee-b1fc-c69f8084ed5f
+        server-addr: 120.77.60.161:8848
+        extension-configs:
+          - dataId: shop-nacos.yml
+    gateway:
+      routes:
+        - id: shop-auth
+          uri: lb://shop-auth
+          predicates:
+            - Path=/system/sso/**
+          filters:
+            - StripPrefix=1
+
+        - id: shop-admin
+          uri: lb://shop-admin
+          predicates:
+            - Path=/system/**
+          filters:
+            - StripPrefix=1
+
+        - id: shop-home
+          uri: lb://shop-home
+          predicates:
+            - Path=/home/**
+          filters:
+            - StripPrefix=1
+
+feign:
+  client:
+    config:
+      default: # default???????????????
+        connectTimeout: 3000
+        readTimeout: 6000

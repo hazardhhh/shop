@@ -1,0 +1,13 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: shop-home
+  cloud:
+    nacos:
+      config:
+        namespace: 34d9fe6b-1b57-49ee-b1fc-c69f8084ed5f
+        server-addr: 120.77.60.161:8848
+        extension-configs:
+          - dataId: shop-nacos.yml

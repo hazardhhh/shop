@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hhh.shop.admin.modules.product.dao.ProductDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hhh.shop.admin.modules.product.entity.ProductEntity" id="productMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="type1" column="type1"/>
+        <result property="type2" column="type2"/>
+    </resultMap>
+
+    <insert id="insertProductPicture">
+        insert into t_product_picture(pid,pic_url) values
+         <foreach collection="list" item="item" separator=",">
+             (#{pid},#{item.pic})
+         </foreach>
+    </insert>
+
+    <resultMap id="productPicResultMap" type="com.hhh.shop.admin.modules.product.entity.ProductPicEntity">
+        <id property="id" column="id"/>
+        <result property="pid" column="pid"/>
+        <result property="pic" column="pic_url"/>
+
+    </resultMap>
+
+    <select id="findProductPicListByPid" resultMap="productPicResultMap">
+        select * from t_product_picture where pid = #{pid}
+    </select>
+
+    <select id="productList" resultType="com.hhh.shop.admin.modules.product.entity.ProductEntity">
+        select * from t_product limit #{start},#{size}
+    </select>
+
+
+</mapper>

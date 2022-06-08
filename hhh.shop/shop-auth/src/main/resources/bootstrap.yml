@@ -1,0 +1,29 @@
+server:
+  port: 8004
+
+spring:
+  application:
+    name: shop-auth
+  cloud:
+    nacos:
+      config:
+        namespace: 34d9fe6b-1b57-49ee-b1fc-c69f8084ed5f
+        server-addr: 120.77.60.161:8848
+        extension-configs:
+          - dataId: shop-nacos.yml
+          - dataId: sa-token.yml
+
+shop:
+  auth:
+    excloudPath:
+      - /system/sso/admin/login
+      - /home/recommend/getCurrentDayRecommend
+      - /home/category/list
+      - /home/product/findProductList/*
+      - /home/product/productByCategoryId/*/*
+      - /search/search/product/keyword
+      - /home/product/getById/*
+      - /user/user/sendMobile/*
+      - /user/user/register
+      - /user/user/login
+      - /user/user/loginSendMobile/*
